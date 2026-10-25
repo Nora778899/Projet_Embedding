@@ -15,3 +15,7 @@ Projet individuel réalisé dans le cadre de la piscine de l'Intelligence Lab.
 1. Installer les dépendances :
    ```bash
    pip install -r requirements.txt
+
+2. Lancer la mémoire sémantique :
+   ```bash
+   python src/semaine1_memoire.py
