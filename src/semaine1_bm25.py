@@ -1,6 +1,6 @@
 from rank_bm25 import BM25Okapi
 
-# 1. Définition de notre mini-mémoire sémantique (inspirée du format JSON du sujet)
+# 1. Définition de notre mini-mémoire sémantique 
 corpus_unites = [
     {"unit_id": "u-001", "type": "decision", "statement": "Le lancement du projet Phoenix est reporté au 15 novembre."},
     {"unit_id": "u-002", "type": "decision", "statement": "On a officiellement validé de décaler la sortie de Phoenix au 15/11."},
@@ -8,7 +8,7 @@ corpus_unites = [
     {"unit_id": "u-004", "type": "action", "statement": "Léa doit absolument envoyer le compte-rendu financier avant ce soir."}
 ]
 
-# 2. Préparation pour BM25 (on tokenise les phrases en découpant les mots)
+# 2. Préparation pour BM25
 corpus_textes = [unite["statement"] for unite in corpus_unites]
 tokenized_corpus = [doc.lower().split(" ") for doc in corpus_textes]
 
