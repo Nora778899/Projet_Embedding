@@ -1,0 +1,22 @@
+[
+    {
+        "unit_id": "u-001",
+        "type": "decision",
+        "statement": "Le lancement du projet Phoenix est reporté au 15 novembre."
+    },
+    {
+        "unit_id": "u-002",
+        "type": "decision",
+        "statement": "On a officiellement validé de décaler la sortie de Phoenix au 15/11."
+    },
+    {
+        "unit_id": "u-003",
+        "type": "proposal",
+        "statement": "On pourrait peut-être envisager de reporter le projet Phoenix au mois de novembre."
+    },
+    {
+        "unit_id": "u-004",
+        "type": "action",
+        "statement": "Léa doit absolument envoyer le compte-rendu financier avant ce soir."
+    }
+]
