@@ -25,7 +25,7 @@ Projet individuel réalisé dans le cadre de la piscine de l'Intelligence Lab.
 ### Objectif
 Améliorer notre outil de recherche pour qu'il ne se trompe plus entre une vraie **décision officielle** et une simple **proposition** qui utilisent les mêmes mots.
 
-###  Ce qui a été fait:
+###  Les réalisations:
 1. **Entraînement du modèle** : 
    - Utilisation d'un modèle de base et d'une technique d'apprentissage par comparaison (triplets : question, bonne réponse, piège).
 2. **Tests et essais** :
