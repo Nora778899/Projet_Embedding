@@ -1,0 +1,32 @@
+[
+  {
+    "unit_id": "u-001",
+    "source_id": "reunion-01",
+    "source_date": "2026-10-01",
+    "type": "proposal",
+    "statement": "On pourrait peut-être envisager de reporter le projet Phoenix au mois de novembre.",
+    "speaker": "Marc",
+    "evidence": "Marc suggère de décaler la date.",
+    "status": "obsolete"
+  },
+  {
+    "unit_id": "u-002",
+    "source_id": "reunion-02",
+    "source_date": "2026-10-05",
+    "type": "decision",
+    "statement": "Le lancement du projet Phoenix est officiellement reporté au 15 novembre.",
+    "speaker": "Karim",
+    "evidence": "Karim confirme le report officiel au 15/11.",
+    "status": "active"
+  },
+  {
+    "unit_id": "u-003",
+    "source_id": "reunion-02",
+    "source_date": "2026-10-05",
+    "type": "action",
+    "statement": "Léa doit envoyer le compte-rendu financier avant ce soir.",
+    "speaker": "Karim",
+    "evidence": "Léa s'engage à transmettre le rapport financier.",
+    "status": "active"
+  }
+]
