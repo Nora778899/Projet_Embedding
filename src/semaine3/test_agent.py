@@ -24,7 +24,7 @@ def test_updated_agent():
     print(f"-> Nombre total de versions (actives + obsolètes) pour arbitrage : {len(all_versions)}")
     assert len(all_versions) >= 2, "L'arbitrage doit lister toutes les versions pour comparaison."
     
-    print("\n🎉 Tous les tests des nouvelles méthodes ont réussi avec succès !")
+    print("\n Tous les tests des nouvelles méthodes ont réussi avec succès !")
 
 if __name__ == "__main__":
     test_updated_agent()
