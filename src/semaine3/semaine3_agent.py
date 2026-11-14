@@ -13,45 +13,53 @@ class SemanticAgentEngine:
         # Je vérifie si le fichier existe physiquement avant de l'ouvrir
         if not os.path.exists(self.memory_path):
             print(f"Erreur : Le fichier {self.memory_path} est introuvable.")
-            return {}
+            return []
         # J'ouvre le fichier en lecture avec l'encodage utf-8 pour éviter les problèmes d'accents
         with open(self.memory_path, 'r', encoding='utf-8') as f:
             return json.load(f)
 
-    def search(self, query, author=None):
-        """Je définis la fonction de recherche par mots-clés et filtrage par auteur."""
+    def search(self, query, speaker=None, active_only=True):
+        """Je recherche par mots-clés dans les 'statement' et je filtre par locuteur ('speaker') et statut actif."""
         results = []
-        entries = self.memory.get("entries", [])
         
-        for entry in entries:
-            if author and entry.get("author") != author:
+        # Je m'assure que la mémoire est bien une liste d'unités
+        if not isinstance(self.memory, list):
+            return results
+        
+        # Je parcours chaque unité de mémoire de la liste
+        for unit in self.memory:
+            # Si on exige des unités actives, j'écarte celles dont le statut est obsolète
+            if active_only and unit.get("status") != "active":
                 continue
-            if query.lower() in entry.get("content", "").lower():
-                results.append(entry)
+                
+            # Si un locuteur est spécifié (ex: Marc, Karim) et qu'il ne correspond pas, je passe au suivant
+            if speaker and unit.get("speaker") != speaker:
+                continue
+                
+            # Je vérifie si mon mot-clé (query) est présent dans le champ 'statement'
+            statement = unit.get("statement", "")
+            if query.lower() in statement.lower():
+                results.append(unit) # J'ajoute l'unité trouvée à mes résultats
                 
         return results
 
-    def run_scenario_attribution(self, query, author):
-        """Scénario 1 & 2 : Je filtre et récupère spécifiquement les contributions d'un auteur."""
-        return self.search(query, author=author)
-
     def run_scenario_obsolescence(self, topic):
-        """Scénario 4 & 7 : Je gère l'obsolescence en extrayant uniquement l'information la plus récente."""
-        entries = self.memory.get("entries", [])
-        relevant = [e for e in entries if topic.lower() in e.get("content", "").lower()]
+        """Je gère l'obsolescence en filtrant les unités actives et en cherchant la plus récente par 'source_date'."""
+        active_units = [u for u in self.memory if u.get("status") == "active"]
+        relevant = [u for u in active_units if topic.lower() in u.get("statement", "").lower()]
         
         if not relevant:
             return None
             
-        latest = max(relevant, key=lambda x: x.get("date", ""))
+        # Je trie par 'source_date' pour extraire la version la plus récente
+        latest = max(relevant, key=lambda x: x.get("source_date", ""))
         return latest
 
     def run_scenario_arbitration(self, topic):
-        """Scénario 6 : J'arbitre les contradictions en récupérant toutes les versions des différents auteurs."""
-        entries = self.memory.get("entries", [])
-        return [e for e in entries if topic.lower() in e.get("content", "").lower()]
+        """J'arbitre les contradictions en récupérant toutes les versions (actives et obsolètes) pour comparaison."""
+        return [u for u in self.memory if topic.lower() in u.get("statement", "").lower()]
 
 if __name__ == "__main__":
-    # Je crée une instance de mon moteur d'agent sémantique pour valider les scénarios
+    # Je crée une instance de mon moteur d'agent sémantique avec les clés adaptées
     agent = SemanticAgentEngine()
-    print("Agent initialisé et prêt pour les 7 scénarios de démonstration !")
+    print("Agent initialisé avec succès et synchronisé avec les clés exactes du JSON !")
