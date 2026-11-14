@@ -21,21 +21,37 @@ class SemanticAgentEngine:
     def search(self, query, author=None):
         """Je définis la fonction de recherche par mots-clés et filtrage par auteur."""
         results = []
-        # Je récupère la liste des entrées dans le dictionnaire JSON (ou une liste vide par défaut)
         entries = self.memory.get("entries", [])
         
-        # Je parcours chaque entrée de mémoire une par une
         for entry in entries:
-            # Si un auteur est spécifié (ex: Léa, Karim, Marc) et qu'il ne correspond pas, je passe au suivant
             if author and entry.get("author") != author:
                 continue
-            # Je vérifie si mon mot-clé (query) est présent dans le contenu, sans me soucier des majuscules
             if query.lower() in entry.get("content", "").lower():
-                results.append(entry) # J'ajoute l'entrée trouvée à mes résultats
+                results.append(entry)
                 
         return results
 
+    def run_scenario_attribution(self, query, author):
+        """Scénario 1 & 2 : Je filtre et récupère spécifiquement les contributions d'un auteur."""
+        return self.search(query, author=author)
+
+    def run_scenario_obsolescence(self, topic):
+        """Scénario 4 & 7 : Je gère l'obsolescence en extrayant uniquement l'information la plus récente."""
+        entries = self.memory.get("entries", [])
+        relevant = [e for e in entries if topic.lower() in e.get("content", "").lower()]
+        
+        if not relevant:
+            return None
+            
+        latest = max(relevant, key=lambda x: x.get("date", ""))
+        return latest
+
+    def run_scenario_arbitration(self, topic):
+        """Scénario 6 : J'arbitre les contradictions en récupérant toutes les versions des différents auteurs."""
+        entries = self.memory.get("entries", [])
+        return [e for e in entries if topic.lower() in e.get("content", "").lower()]
+
 if __name__ == "__main__":
-    # Je crée une instance de mon moteur d'agent sémantique
+    # Je crée une instance de mon moteur d'agent sémantique pour valider les scénarios
     agent = SemanticAgentEngine()
-    print("Agent initialisé avec succès !")
+    print("Agent initialisé et prêt pour les 7 scénarios de démonstration !")
