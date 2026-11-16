@@ -89,7 +89,7 @@ python src/semaine3/test_agent.py
 
 ---
 
-## Conclusion : Pourquoi l'hybridation est la seule vraie réponse
+## Conclusion : Peut-on confier la logique à un simple embedding ?
 
 Au terme de ces trois semaines d'expérimentation, de code et de remises en question, une certitude s'impose : **non, un modèle d'embeddings ne suffit pas à lui seul.**
 
