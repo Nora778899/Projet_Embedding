@@ -23,6 +23,17 @@ def test_updated_agent():
     all_versions = agent.run_scenario_arbitration("projet Phoenix")
     print(f"-> Nombre total de versions (actives + obsolètes) pour arbitrage : {len(all_versions)}")
     assert len(all_versions) >= 2, "L'arbitrage doit lister toutes les versions pour comparaison."
+
+    # 5. Je teste la préparation d'un brouillon d'e-mail avec outil simulé et contrat JSON
+    draft = agent.prepare_action_draft("Léa", "projet Phoenix")
+    print(f"-> Brouillon généré pour : {draft.get('recipient_name')} ({draft.get('recipient_email')})")
+    assert draft.get("needs_confirmation") is True, "Le contrat d'action doit exiger une confirmation (needs_confirmation=True)."
+    assert draft.get("action") == "draft_email", "L'action simulée doit être un brouillon d'e-mail."
+
+    # 6. Je teste la demande de clarification si le destinataire est inconnu
+    clarification = agent.prepare_action_draft("PersonneInconnue", "projet Phoenix")
+    print(f"-> Réponse de l'agent (clarification) : {clarification.get('message')}")
+    assert clarification.get("status") == "clarification_needed", "L'agent doit demander une clarification si le destinataire n'est pas résolu."
     
     print("\n Tous les tests des nouvelles méthodes ont réussi avec succès !")
 

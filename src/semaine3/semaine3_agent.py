@@ -43,6 +43,37 @@ class SemanticAgentEngine:
                 
         return results
 
+    def get_contact_email(self, name):
+        """Résout l'adresse e-mail d'un destinataire depuis la mémoire (ex: Léa)."""
+        for unit in self.memory:
+            if unit.get("type") == "contact" and name.lower() in unit.get("statement", "").lower():
+                return unit
+        return None
+
+    def prepare_action_draft(self, recipient_name, topic):
+        """Simule la préparation d'un brouillon d'e-mail avec contrat JSON et needs_confirmation."""
+        contact = self.get_contact_email(recipient_name)
+        
+        # Test de la demande de clarification si le destinataire n'est pas résolu
+        if not contact:
+            return {
+                "status": "clarification_needed",
+                "message": f"Précision requise : le destinataire '{recipient_name}' est introuvable dans l'annuaire. Souhaitez-vous adresser ce message à un autre membre ?"
+            }
+        
+        # Contrat JSON de l'action simulée (sans exécution réelle)
+        return {
+            "status": "success",
+            "action": "draft_email",
+            "recipient_name": recipient_name,
+            "recipient_email": "lea.projet@ece.fr",
+            "subject": f"Point d'étape : {topic}",
+            "body": f"Bonjour {recipient_name},\n\nVoici le point synthétique concernant le dossier {topic}.\n\nCordialement.",
+            "sources_used": ["u-002", "u-003"],
+            "needs_confirmation": True,
+            "executed": False
+        }
+
     def run_scenario_obsolescence(self, topic):
         """Je gère l'obsolescence en filtrant les unités actives et en cherchant la plus récente par 'source_date'."""
         active_units = [u for u in self.memory if u.get("status") == "active"]
