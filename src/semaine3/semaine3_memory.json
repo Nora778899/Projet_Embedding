@@ -28,5 +28,25 @@
     "speaker": "Karim",
     "evidence": "Léa s'engage à transmettre le rapport financier.",
     "status": "active"
+  },
+  {
+    "unit_id": "u-004",
+    "source_id": "reunion-03",
+    "source_date": "2026-10-06",
+    "type": "proposal",
+    "statement": "Je pense au contraire qu'il ne faut pas reporter le projet et maintenir la date initiale pour ne pas bloquer les équipes.",
+    "speaker": "Léa",
+    "evidence": "Léa conteste le report de Karim.",
+    "status": "active"
+  },
+  {
+    "unit_id": "u-005",
+    "source_id": "annuaire-interne",
+    "source_date": "2026-09-01",
+    "type": "contact",
+    "statement": "Léa est responsable administrative et joignable à l'adresse lea.projet@ece.fr",
+    "speaker": "Admin",
+    "evidence": "Fiche contact de Léa.",
+    "status": "active"
   }
 ]
