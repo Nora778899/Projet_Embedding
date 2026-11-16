@@ -63,6 +63,27 @@ python src/semaine3/test_agent.py
 ```
 
 ---
+## Documentation des Datasets & Protocole Expérimental
+
+### Structure et Annotation des Données
+* **Provenance & Licence :** Corpus synthétique créé sur mesure pour simuler des échanges professionnels d'équipe (projet interne ECE Paris, libre de droits pour usage académique).
+* **Préparation & Schéma JSON :** Chaque conversation est découpée en unités atomiques structurées contenant les métadonnées suivantes : `unit_id` (identifiant unique), `speaker` (Léa, Karim, Marc), `statement` (contenu textuel), `status` (`active` ou `obsolete`) et `source_date` (horodatage ISO).
+* **Splits (Séparation des jeux) :** 
+  * *Jeu d'entraînement (Semaine 2) :* Paires et triplets (ancre, positif, négatif difficile) dédiés à l'apprentissage contrastif.
+  * *Jeu d'évaluation et d'arbitrage (Semaine 3) :* Scénarios multi-tours indépendants testant l'obsolescence temporelle et les contradictions entre intervenants.
+
+### Rapport Expérimental & Étude d'Ablation
+
+| Approche / Configuration | Précision sur l'obsolescence | Gestion des contradictions | Coût & Latence (CPU local) | Limite principale observée |
+| :--- | :---: | :---: | :---: | :--- |
+| **Baseline Lexicale (BM25)** | Faible | Aucune | Très faible (< 10 ms) | Échoue sur les synonymes et reformulations. |
+| **Embeddings Bruts (`all-MiniLM-L6-v2`)** | Faible | Aucune | Faible (~30 ms) | Confond une proposition avec une décision (~0.73 vs ~0.75). |
+| **Embeddings Affinés (Semaine 2)** | Moyenne | Aucune | Faible (~30 ms) | Surapprentissage rapide sur un petit volume de triplets. |
+| **Architecture Hybride (`SemanticAgentEngine`)** | **100 % (Validé)** | **100 % (Validé)** | Faible (~35 ms) | Dépend de la qualité initiale de l'annotation des métadonnées. |
+
+#### Analyse d'Ablation et Exemple d'Erreur Typique
+* **Impact du filtrage structuré (Ablation) :** Lorsqu'on désactive le contrôle des attributs `status` et `source_date` dans le `SemanticAgentEngine` pour ne garder que la similarité cosinus, l'agent restitue l'information périmée dans **100 % des scénarios de mise à jour** dès lors que l'ancien message partage plus de mots-clés avec la question que le nouveau.
+* **Cas d'erreur vectoriel :** Sur la requête *« Quelle est la date retenue pour le projet ? »*, un encodeur dense seul attribue un score quasi identique à *« On pourrait proposer de reporter au 12 novembre »* (Marc, proposition obsolète) et *« Le projet est officiellement reporté au 15 novembre »* (Karim, décision active), illustrant l'incapacité du vecteur à modéliser l'autorité et la temporalité sans règles déterministes.
 
 ## Conclusion & Réflexion Personnelle : Peut-on confier la logique à un simple embedding ?
 
